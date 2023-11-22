@@ -25,4 +25,8 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - run: ./mill -i -d -k --disable-ticker __.compile
+      - name: compile x1
+        run: rm -rf out; ./mill -i -d -k --disable-ticker __.compile
+
+      - name: compile x2
+        run: rm -rf out; ./mill -i -d -k --disable-ticker __.compile
