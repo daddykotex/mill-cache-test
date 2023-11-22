@@ -4,6 +4,7 @@ import scalatags.Text.all._
 import mainargs.{main, ParserForMethods}
 
 object Foo {
+  val test = "test"
   def generateHtml(text: String) = {
     h1(text).toString
   }
