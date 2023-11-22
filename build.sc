@@ -1,17 +1,25 @@
-import $ivy.`com.disneystreaming.smithy4s::smithy4s-mill-codegen-plugin::0.18.3`
+import mill._, scalalib._
 
-import smithy4s.codegen.mill._
-import mill._, mill.scalalib._
-
-object service extends SbtModule with Smithy4sModule {
-
-  def millSourcePath = os.pwd
-  def smithy4sInputDirs = T.sources(millSourcePath / "src" / "main" / "smithy")
-
-  def scalaVersion = "2.13.9"
-  override def ivyDeps = Agg(
-    ivy"com.disneystreaming.smithy4s::smithy4s-core:${smithy4sVersion()}",
-    ivy"com.disneystreaming.smithy4s::smithy4s-http4s-swagger:${smithy4sVersion()}",
-    ivy"org.http4s::http4s-ember-server:0.23.16"
+object foo extends RootModule with ScalaModule {
+  def scalaVersion = "2.13.11"
+  def ivyDeps = Agg(
+    ivy"com.lihaoyi::scalatags:0.8.2",
+    ivy"com.lihaoyi::mainargs:0.4.0"
   )
+
+  object test extends ScalaTests {
+    def ivyDeps = Agg(ivy"com.lihaoyi::utest:0.7.11")
+    def testFramework = "utest.runner.Framework"
+  }
+
+  def randomCheck() = T.command {
+    val specs = os.pwd / "specs"
+    val allSpecsCombined = os.walk(specs).map(os.read).mkString
+    val digits = allSpecsCombined.filter(_.isDigit)
+    if (digits.toSet.size != digits.size) {
+      sys.error("DUPLICATES FOUND")
+    } else {
+      ()
+    }
+  }
 }
